@@ -24,21 +24,21 @@ class BaseDriverForm(UserCreationForm):
         if len(license_number) != DriverLicenseUpdateForm.LEN_:
             raise ValidationError(f"License number must consist of "
                                   f"{DriverLicenseUpdateForm.LEN_} character")
-        if not first_upper.isupper():
+        if first_upper.isupper():
             raise ValidationError(f"First"
-                                  f" {DriverLicenseUpdateForm.LAST_DIGITS} "
+                                  f" {DriverLicenseUpdateForm.FIRST_UPPER} "
                                   f"{common_part} in uppercase")
-        if not last_digits.isdigit():
+        if last_digits.isnumeric():
             raise ValidationError(f"Last {DriverLicenseUpdateForm.LAST_DIGITS}"
                                   f" {common_part} digits")
         return license_number
 
 
-class DriverCreationForm(BaseDriverForm, UserCreationForm):
+class DriverCreationForm(BaseDriverForm):
     pass
 
 
-class DriverLicenseUpdateForm(BaseDriverForm, UserCreationForm):
+class DriverLicenseUpdateForm(BaseDriverForm):
     pass
 
 

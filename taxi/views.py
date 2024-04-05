@@ -98,25 +98,20 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
 
 
 @login_required
 def car_user_assign(request: HttpRequest, pk: int):
     user = request.user
     car = Car.objects.get(pk=pk)
-    if car:
-        if user in car.drivers.all():
-            car.drivers.remove(user)
-        else:
-            car.drivers.add(user)
-    else:
-        car.drivers.add(user)
-
+    car.drivers.add(user)
     context = {
         "car": car,
     }
